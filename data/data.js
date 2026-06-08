@@ -168,13 +168,15 @@ window.SITE_PAGES = [
   {
     slug: "medical-ai", layout: "medical", icon: "neurology",
     title:    { en: "Medical AI", zh: "醫療 AI 廠商" },
-    subtitle: { en: "Medical-AI-focused exhibitors and innovations, each with a detailed profile. Filter by sub-category or search; tap a card for the full breakdown.",
-                zh: "聚焦醫療 AI 的參展廠商與創新項目,每一個都有詳細介紹。可依次分類篩選或搜尋,點卡片看完整拆解。" },
+    subtitle: { en: "Medical-AI exhibitors and pavilions, plus the forum themes and industry trends shaping 2026 (generative AI / LLM, agentic AI). Each has a detailed profile — filter by sub-category or search; tap a card for the full breakdown.",
+                zh: "聚焦醫療 AI 的參展廠商與主題館,並納入形塑 2026 的論壇主題與產業趨勢(生成式 AI / LLM、代理型 AI)。每一個都有詳細介紹 —— 可依次分類篩選或搜尋,點卡片看完整拆解。" },
     taxonomy: [
       { id: "imaging",  icon: "image_search",            name: { en: "Medical imaging AI", zh: "醫療影像 AI" } },
       { id: "surgical", icon: "precision_manufacturing", name: { en: "Surgical navigation & robots", zh: "手術導航與機器人" } },
       { id: "rehab",    icon: "accessibility_new",       name: { en: "Rehab & assistive robots", zh: "復健與輔助機器人" } },
       { id: "platform", icon: "hub",                     name: { en: "AI platforms & clinical systems", zh: "AI 平台與臨床系統" } },
+      { id: "genai",    icon: "auto_awesome",            name: { en: "Generative AI / LLM", zh: "生成式 AI / LLM" } },
+      { id: "agent",    icon: "smart_toy",               name: { en: "Agentic AI / automation", zh: "AI 代理 / 自動化" } },
       { id: "startup",  icon: "rocket_launch",           name: { en: "M-novator startups", zh: "M-novator 新創" } }
     ],
     vendors: [
@@ -232,7 +234,7 @@ window.SITE_PAGES = [
         url: "https://www.hiwin.tw/products/medical_robot/medical_robot_list.aspx"
       },
       {
-        slug: "youbioda", subcats: ["platform", "surgical"],
+        slug: "youbioda", subcats: ["platform", "agent"],
         name: { en: "優必達 (AI & robotics)", zh: "優必達" },
         zone: { en: "AI & Smart Healthcare", zh: "AI 智慧醫療" },
         location: { en: "AI Smart Healthcare Pavilion (booth per official map)", zh: "AI 智慧醫療主題館(攤位以官方平面圖為準)" },
@@ -328,44 +330,58 @@ window.SITE_PAGES = [
           usecase: { en: "Home and long-term care wound monitoring and triage.",
                      zh: "居家與長照的傷口監測與分級照護。" }
         }
+      },
+      {
+        slug: "genai-clinical", subcats: ["genai", "platform"],
+        name: { en: "Generative AI · Clinical documentation", zh: "生成式 AI · 臨床文件與減壓" },
+        zone: { en: "Forum theme · Domestic Market Forum", zh: "論壇主題 · 國內市場論壇" },
+        location: { en: "Domestic Market Forum theme (not a booth)", zh: "國內市場論壇主題(非攤位)" },
+        highlight: { en: "LLMs that summarize records and ease clinical paperwork.", zh: "用 LLM 整理病歷、減輕臨床文書。" },
+        profile: {
+          summary: { en: "A thread under Medical Taiwan's Domestic Market Forum (\"implementing smart healthcare\"). By 2026 generative AI is an everyday part of clinical workflows in Taiwan, not just a demo.",
+                     zh: "Medical Taiwan 國內市場論壇「智慧醫療落實」涵蓋的主題之一。2026 年生成式 AI 已是台灣臨床日常的一環,而非僅止於展示。" },
+          angle:   { en: "Expanding from administrative documents (record summaries, referral letters, ICD coding) toward clinical decision support.",
+                     zh: "從行政文件(病歷摘要、轉診單、ICD 編碼)延伸到臨床決策輔助。" },
+          tech:    { en: "LLM-driven record summarization and diagnostic-code assistance — e.g. NTUH's in-house LLM diagnostic-code assistant (~86.67% F-score) and the award-winning \"clinical summary\" assistant.",
+                     zh: "LLM 驅動的病歷摘要與診斷碼輔助 —— 例如臺大醫院自建 LLM 診斷碼輔助系統(F-score 約 86.67%),以及獲 GenAI Stars 金獎的「臨床摘要小幫手」。" },
+          usecase: { en: "Cutting clinicians' paperwork, speeding ICD-10 coding and improving payment accuracy.",
+                     zh: "減輕醫護文書、加速 ICD-10 編碼、提升給付準確度。" }
+        }
+      },
+      {
+        slug: "agentic-ai", subcats: ["agent", "platform"],
+        name: { en: "Agentic AI · the new hospital OS", zh: "AI 代理 · 醫院新作業系統" },
+        zone: { en: "Industry trend", zh: "產業趨勢" },
+        location: { en: "Industry trend (not a Medical Taiwan booth)", zh: "產業趨勢(非本展攤位)" },
+        highlight: { en: "Agentic AI moving into the mainstream of smart hospitals.", zh: "代理型 AI 走向智慧醫院主流。" },
+        profile: {
+          summary: { en: "A defining 2026 smart-healthcare trend: agentic AI — flexible, coordinating digital agents acting as a new hospital operating system.",
+                     zh: "2026 智慧醫療的關鍵趨勢:代理型 AI(agentic AI)—— 可靈活應變、具統籌協調能力,被視為醫院的新作業系統。" },
+          angle:   { en: "Multiple AI agents collaborate to orchestrate clinical and operational workflows.",
+                     zh: "由多個 AI 代理協作,統籌臨床與營運流程。" },
+          tech:    { en: "NVIDIA, Foxconn and major Taiwanese medical centers are deploying agentic and physical AI under the \"Healthy Taiwan\" program, alongside digital twins and accelerated computing (showcased at NVIDIA GTC Taipei).",
+                     zh: "NVIDIA、鴻海科技集團與台灣各大醫療中心於「健康台灣深耕計畫」導入代理型 AI 與物理 AI,並結合數位孿生與加速運算(於 NVIDIA GTC Taipei 展示)。" },
+          usecase: { en: "Hospital-operations automation, clinical-workflow coordination and physical AI (medical robots).",
+                     zh: "醫院營運自動化、臨床流程協作,以及物理 AI(醫療機器人)。" }
+        }
       }
     ]
   },
 
-  /* ===================== EXHIBITORS / TABLE ===================== */
+  /* ===================== EXHIBITORS / TABLE (full directory) ===================== */
   {
     slug: "exhibitors", layout: "table", icon: "storefront",
-    title:    { en: "Featured Exhibitors", zh: "焦點展商" },
-    subtitle: { en: "A selection of notable exhibitors and their highlights. The full ~330-company directory and floor plan are on the official site. Sort by any column; filter by zone.",
-                zh: "精選代表性展商與其亮點。完整約 330 家名單與平面圖請見官網。可點欄位排序、依展區篩選。" },
+    title:    { en: "Exhibitor Directory", zh: "參展商名錄" },
+    subtitle: { en: "All exhibitors from the official list — search by name or product, filter by zone, sort any column. Booths and zones follow the official floor plan.",
+                zh: "整理自官方參展商名單的全部廠商 —— 可依名稱或產品搜尋、依展區篩選、點欄位排序。攤位與展區以官方平面圖為準。" },
     columns: [
-      { key: "company", label: { en: "Company", zh: "公司" }, type: "text" },
-      { key: "zone",    label: { en: "Zone", zh: "展區" }, type: "tag", filter: true },
-      { key: "highlight", label: { en: "Highlight", zh: "技術亮點" }, type: "text" }
+      { key: "company",  label: { en: "Company", zh: "公司" }, type: "text" },
+      { key: "zone",     label: { en: "Zone", zh: "展區" }, type: "tag", filter: true },
+      { key: "booth",    label: { en: "Booth", zh: "攤位" }, type: "text" },
+      { key: "products", label: { en: "Main products", zh: "主要產品" }, type: "text" }
     ],
-    rows: [
-      { company: { en: "EBM Technologies (商之器)", zh: "商之器科技" },
-        zone:    { en: "AI & Smart Healthcare", zh: "AI 智慧醫療" },
-        highlight:{ en: "Advanced medical-imaging software (PACS / cloud imaging).", zh: "高階醫療影像軟體(PACS / 雲端影像)。" } },
-      { company: { en: "Point Robotics (炳碩生醫)", zh: "炳碩生醫" },
-        zone:    { en: "AI & Smart Healthcare", zh: "AI 智慧醫療" },
-        highlight:{ en: "Surgical navigation and surgery-assist robotics.", zh: "手術導航系統與手術輔助機器人。" } },
-      { company: { en: "優必達", zh: "優必達" },
-        zone:    { en: "AI & Smart Healthcare", zh: "AI 智慧醫療" },
-        highlight:{ en: "Artificial-intelligence and robotics technology.", zh: "人工智慧與機器人技術。" } },
-      { company: { en: "HIWIN (上銀)", zh: "上銀科技" },
-        zone:    { en: "Sports Medicine", zh: "運動醫學" },
-        highlight:{ en: "Rehabilitation-training robotics.", zh: "復健訓練機器人。" } },
-      { company: { en: "Scivision Biotech (科妍)", zh: "科妍生技" },
-        zone:    { en: "Medical Supplies Hub", zh: "醫材廊道" },
-        highlight:{ en: "Bio-implant materials (e.g. hyaluronic acid).", zh: "生物植入醫材(如玻尿酸)。" } },
-      { company: { en: "華新醫材", zh: "華新醫材" },
-        zone:    { en: "Medical Supplies Hub", zh: "醫材廊道" },
-        highlight:{ en: "Wound care and bio-implant medical materials.", zh: "創傷照護與生物植入醫材。" } },
-      { company: { en: "康力得生技", zh: "康力得生技" },
-        zone:    { en: "Medical Supplies Hub", zh: "醫材廊道" },
-        highlight:{ en: "Wound care and bio-implant medical materials.", zh: "創傷照護與生物植入醫材。" } }
-    ]
+    // full directory lives in data/exhibitors.js (loaded by exhibitors.html before this file)
+    rows: (typeof window !== "undefined" && window.MT_EXHIBITORS) || []
   },
 
   /* ===================== SCHEDULE / TIMELINE ===================== */
@@ -461,6 +477,21 @@ window.SITE_PAGES = [
         desc: { en: "AI integration platforms, big data, smart OR / ICU and clinical systems.",
                 zh: "AI 整合平台、大數據、智慧手術室/ICU 與臨床系統。" },
         tip:  { en: "Good for hospital IT / CIOs", zh: "適合醫院資訊/CIO" } },
+      { icon: "auto_awesome", subcats: ["genai"],
+        name: { en: "Generative AI / LLM", zh: "生成式 AI / LLM" },
+        desc: { en: "Large language models for record summaries, coding and clinical decision support.",
+                zh: "大型語言模型用於病歷摘要、編碼與臨床決策輔助。" },
+        tip:  { en: "Good for medical informatics", zh: "適合醫務資訊/病歷管理" } },
+      { icon: "smart_toy", subcats: ["agent"],
+        name: { en: "Agentic AI / Automation", zh: "AI 代理 / 自動化" },
+        desc: { en: "Agentic AI and automation reshaping hospital operations and robotics.",
+                zh: "代理型 AI 與自動化,重塑醫院營運與機器人。" },
+        tip:  { en: "Good for innovation / strategy", zh: "適合創新/策略" } },
+      { icon: "neurology", subcats: ["genai", "agent"],
+        name: { en: "Frontier AI: LLM × Agent", zh: "前沿 AI:LLM × 代理" },
+        desc: { en: "The cutting edge — generative and agentic AI together, the 2026 inflection point.",
+                zh: "最前沿 —— 生成式與代理型 AI 並進,2026 的關鍵拐點。" },
+        tip:  { en: "Good for a trend-spotting tour", zh: "適合掌握趨勢風向" } },
       { icon: "rocket_launch", subcats: ["startup"],
         name: { en: "M-novator Startup Tour", zh: "M-novator 新創巡禮" },
         desc: { en: "The startup zone's medical-AI highlights — detection, wearables, remote care.",
