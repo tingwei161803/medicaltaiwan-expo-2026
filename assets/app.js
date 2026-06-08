@@ -83,6 +83,44 @@
         '<path class="line-path" d="' + path + '" fill="none" />' + dots + labels + "</svg>";
     }
 
+    /* ---- shared: medical-AI vendor profile (used by `medical` + `routes`) ---- */
+    function subcatTags(v, taxById) {
+      return (v.subcats || []).map(function (id) {
+        var c = taxById[id];
+        return c ? '<span class="subcat-tag"><span class="material-symbols-rounded" aria-hidden="true">' +
+          esc(c.icon || "label") + "</span>" + esc(t(c.name)) + "</span>" : "";
+      }).join("");
+    }
+    function profRow(k, v) {
+      return v ? '<div class="exh-row"><span class="exh-row__k">' + esc(k) + '</span><span class="exh-row__v">' + esc(v) + "</span></div>" : "";
+    }
+    function profSect(icon, label, val) {
+      if (!val) return "";
+      return '<div class="prof-sect"><div class="prof-sect__h"><span class="material-symbols-rounded" aria-hidden="true">' +
+        esc(icon) + "</span>" + esc(label) + "</div><p>" + esc(val) + "</p></div>";
+    }
+    function openVendorDialog(v, taxById) {
+      if (!v) return;
+      var p = v.profile || {};
+      var dlg = L.dialog(), body = document.getElementById("dialogBody");
+      var meta = profRow(t({ zh: "展區", en: "Zone" }), t(v.zone)) +
+                 profRow(t({ zh: "位置", en: "Location" }), t(v.location));
+      body.innerHTML =
+        '<h2 id="dialogTitle">' + esc(t(v.name)) + "</h2>" +
+        '<div class="subcat-row">' + subcatTags(v, taxById) + "</div>" +
+        '<div class="prof">' +
+          profSect("info", t({ zh: "公司簡介", en: "About" }), p.summary ? t(p.summary) : "") +
+          profSect("medical_services", t({ zh: "醫療 AI 切入點", en: "Medical-AI angle" }), p.angle ? t(p.angle) : "") +
+          profSect("memory", t({ zh: "技術與產品", en: "Tech & products" }), p.tech ? t(p.tech) : "") +
+          profSect("stethoscope", t({ zh: "應用場景", en: "Use cases" }), p.usecase ? t(p.usecase) : "") +
+        "</div>" +
+        '<div class="exh-dlg__rows">' + meta + "</div>" +
+        (v.url ? '<a class="cta-btn" href="' + esc(v.url) + '" target="_blank" rel="noopener">' +
+          esc(t({ zh: "官方網站", en: "Official site" })) +
+          '<span class="material-symbols-rounded" aria-hidden="true">open_in_new</span></a>' : "");
+      if (!dlg.open) dlg.showModal();
+    }
+
     /* =====================================================================
        LAYOUT REGISTRY
        ===================================================================== */
@@ -308,6 +346,31 @@
             '<div class="map-box" id="map" role="application" aria-label="Map"></div>' +
             '<ul class="map-list" id="mapList"></ul>' +
           "</div>";
+      },
+
+      /* ---- medical: medical-AI exhibitors, multi-faceted profile per vendor ---- */
+      medical: function (p) {
+        return head(p) +
+          '<div class="toolbar">' +
+            '<input id="search" class="search" type="search" autocomplete="off" ' +
+              'placeholder="' + (L.state.lang === "en" ? "Search vendors…" : "搜尋廠商…") + '" ' +
+              'aria-label="' + (L.state.lang === "en" ? "Search" : "搜尋") + '" />' +
+          "</div>" +
+          '<div class="chips med-cats" id="medCats"></div>' +
+          '<p class="result-count" id="resultCount" aria-live="polite"></p>' +
+          '<div class="grid" id="medGrid"></div>';
+      },
+
+      /* ---- routes: preset routes + sub-category builder -> walkable itinerary ---- */
+      routes: function (p) {
+        var en = L.state.lang === "en";
+        return head(p) +
+          '<h2 class="routes-sub">' + esc(en ? "Suggested routes" : "建議路線") + "</h2>" +
+          '<div class="route-presets" id="routePresets"></div>' +
+          '<h2 class="routes-sub">' + esc(en ? "Build your own" : "自由組合") + "</h2>" +
+          '<div class="chips" id="routeChips"></div>' +
+          '<p class="route-summary" id="routeSummary" aria-live="polite"></p>' +
+          '<div class="route-list" id="routeList"></div>';
       }
     };
 
@@ -608,6 +671,196 @@
           li.addEventListener("keydown", function (e) { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); go(); } });
         });
         teardowns.push(function () { try { map.remove(); } catch (e) {} });
+      },
+
+      medical: function (p) {
+        var grid = document.getElementById("medGrid");
+        var search = document.getElementById("search");
+        var count = document.getElementById("resultCount");
+        var catsBox = document.getElementById("medCats");
+        var vendors = p.vendors || [], tax = p.taxonomy || [];
+        var taxById = {};
+        tax.forEach(function (c) { taxById[c.id] = c; });
+        var st = { q: "", cat: "" };
+
+        function catCount(id) {
+          return vendors.filter(function (v) { return (v.subcats || []).indexOf(id) !== -1; }).length;
+        }
+        function matches(v) {
+          if (st.cat && (v.subcats || []).indexOf(st.cat) === -1) return false;
+          if (!st.q) return true;
+          var pr = v.profile || {};
+          var hay = (t(v.name) + " " + t(v.zone) + " " + t(v.highlight) + " " +
+            (pr.summary ? t(pr.summary) : "") + " " + (pr.tech ? t(pr.tech) : "")).toLowerCase();
+          return hay.indexOf(st.q) !== -1;
+        }
+        function findVendor(slug) {
+          return vendors.filter(function (v) { return v.slug === slug; })[0] || null;
+        }
+        function openItem(slug) {
+          var v = findVendor(slug); if (!v) return;
+          openVendorDialog(v, taxById);
+          if (location.hash.slice(1) !== slug) history.replaceState(null, "", "#" + slug);
+        }
+        function paintCats() {
+          var all = '<button class="chip' + (st.cat === "" ? " chip--active" : "") + '" type="button" data-cat="">' +
+            esc(L.state.lang === "en" ? "All" : "全部") + ' <span class="chip__n">' + vendors.length + "</span></button>";
+          var pills = tax.map(function (c) {
+            var n = catCount(c.id); if (!n) return "";
+            return '<button class="chip' + (st.cat === c.id ? " chip--active" : "") + '" type="button" data-cat="' + esc(c.id) + '">' +
+              '<span class="material-symbols-rounded" aria-hidden="true">' + esc(c.icon || "label") + "</span>" +
+              esc(t(c.name)) + ' <span class="chip__n">' + n + "</span></button>";
+          }).join("");
+          catsBox.innerHTML = all + pills;
+          [].forEach.call(catsBox.querySelectorAll(".chip"), function (chip) {
+            chip.addEventListener("click", function () { st.cat = chip.dataset.cat || ""; paintCats(); paint(); });
+          });
+        }
+        function paint() {
+          var rows = vendors.filter(matches);
+          grid.innerHTML = rows.map(function (v) {
+            return '<article class="card med-card" tabindex="0" role="button" data-item data-slug="' + esc(v.slug) + '" ' +
+              'aria-label="' + esc(t(v.name)) + '">' +
+              '<h3 class="card__title">' + esc(t(v.name)) + "</h3>" +
+              '<div class="med-card__loc"><span class="material-symbols-rounded" aria-hidden="true">location_on</span>' +
+                "<span>" + esc(t(v.location)) + "</span></div>" +
+              (t(v.highlight) ? '<p class="card__summary">' + esc(t(v.highlight)) + "</p>" : "") +
+              '<div class="card__tags">' + subcatTags(v, taxById) + "</div></article>";
+          }).join("");
+          if (count) count.textContent = rows.length + (L.state.lang === "en" ? " vendor(s)" : " 家");
+          [].forEach.call(grid.querySelectorAll(".card[data-slug]"), function (card) {
+            var slug = card.dataset.slug;
+            card.addEventListener("click", function () { openItem(slug); });
+            card.addEventListener("keydown", function (e) {
+              if (e.key === "Enter" || e.key === " ") { e.preventDefault(); openItem(slug); }
+            });
+          });
+        }
+        function syncHash() {
+          var slug = location.hash.slice(1);
+          if (slug && findVendor(slug)) openItem(slug);
+        }
+        if (search) search.addEventListener("input", function () { st.q = this.value.trim().toLowerCase(); paint(); });
+        var dlg = L.dialog();
+        function onClose() {
+          var slug = location.hash.slice(1);
+          if (slug && findVendor(slug)) history.replaceState(null, "", location.pathname + location.search);
+        }
+        dlg.addEventListener("close", onClose);
+        var onHash = function () { syncHash(); };
+        window.addEventListener("hashchange", onHash);
+        teardowns.push(function () {
+          window.removeEventListener("hashchange", onHash);
+          dlg.removeEventListener("close", onClose);
+        });
+        paintCats();
+        paint();
+        syncHash();
+      },
+
+      routes: function (p) {
+        var med = (L.pages || []).filter(function (x) { return x.layout === "medical"; })[0];
+        var vendors = (med && med.vendors) || [];
+        var tax = (med && med.taxonomy) || [];
+        var taxById = {};
+        tax.forEach(function (c) { taxById[c.id] = c; });
+        var presets = p.presets || [];
+        var presetsBox = document.getElementById("routePresets");
+        var chipsBox = document.getElementById("routeChips");
+        var summary = document.getElementById("routeSummary");
+        var listEl = document.getElementById("routeList");
+        var picked = {};   // set of subcat ids; empty = all
+
+        function paintPresets() {
+          presetsBox.innerHTML = presets.map(function (r, i) {
+            return '<article class="route-card" tabindex="0" role="button" data-item data-r="' + i + '" ' +
+              'aria-label="' + esc(t(r.name)) + '">' +
+              '<span class="material-symbols-rounded route-card__ico" aria-hidden="true">' + esc(r.icon || "route") + "</span>" +
+              '<h3 class="route-card__name">' + esc(t(r.name)) + "</h3>" +
+              '<p class="route-card__desc">' + esc(t(r.desc)) + "</p>" +
+              '<span class="route-card__tip">' + esc(t(r.tip)) + "</span></article>";
+          }).join("");
+          function apply(i) {
+            var r = presets[i]; if (!r) return;
+            picked = {};
+            (r.subcats || []).forEach(function (s) { picked[s] = true; });
+            paintChips(); render();
+            if (summary && summary.scrollIntoView) summary.scrollIntoView({ behavior: "smooth", block: "start" });
+          }
+          [].forEach.call(presetsBox.querySelectorAll(".route-card"), function (c) {
+            c.addEventListener("click", function () { apply(+c.dataset.r); });
+            c.addEventListener("keydown", function (e) {
+              if (e.key === "Enter" || e.key === " ") { e.preventDefault(); apply(+c.dataset.r); }
+            });
+          });
+        }
+        function paintChips() {
+          var all = '<button class="chip' + (Object.keys(picked).length === 0 ? " chip--active" : "") + '" type="button" data-s="">' +
+            esc(L.state.lang === "en" ? "All sub-categories" : "全部次分類") + "</button>";
+          var chips = tax.map(function (c) {
+            return '<button class="chip' + (picked[c.id] ? " chip--active" : "") + '" type="button" data-s="' + esc(c.id) + '">' +
+              '<span class="material-symbols-rounded" aria-hidden="true">' + esc(c.icon || "label") + "</span>" + esc(t(c.name)) + "</button>";
+          }).join("");
+          chipsBox.innerHTML = all + chips;
+          [].forEach.call(chipsBox.querySelectorAll(".chip"), function (b) {
+            b.addEventListener("click", function () {
+              var s = b.dataset.s;
+              if (!s) picked = {};
+              else if (picked[s]) delete picked[s];
+              else picked[s] = true;
+              paintChips(); render();
+            });
+          });
+        }
+        function pool() {
+          var keys = Object.keys(picked);
+          if (!keys.length) return vendors.slice();
+          return vendors.filter(function (v) {
+            return (v.subcats || []).some(function (s) { return picked[s]; });
+          });
+        }
+        function render() {
+          var list = pool();
+          if (summary) {
+            summary.innerHTML = "<b>" + list.length + "</b> " +
+              (L.state.lang === "en" ? "stop(s) on this route" : "站 · 推薦停留");
+          }
+          if (!list.length) {
+            listEl.innerHTML = '<p class="empty">' +
+              (L.state.lang === "en" ? "No vendors for this combination — try other sub-categories." : "這個組合目前沒有對應廠商,換個次分類試試。") + "</p>";
+            return;
+          }
+          var order = [], groups = {};
+          list.forEach(function (v) {
+            var z = t(v.zone) || "—";
+            if (!groups[z]) { groups[z] = []; order.push(z); }
+            groups[z].push(v);
+          });
+          var refs = [];
+          listEl.innerHTML = order.map(function (z) {
+            var stops = groups[z].map(function (v) {
+              var idx = refs.push(v) - 1;
+              return '<button class="route-stop" type="button" data-item data-ref="' + idx + '" aria-label="' + esc(t(v.name)) + '">' +
+                '<span class="route-stop__main">' +
+                  '<span class="route-stop__name">' + esc(t(v.name)) + "</span>" +
+                  (t(v.highlight) ? '<span class="route-stop__hl">' + esc(t(v.highlight)) + "</span>" : "") +
+                  '<span class="route-stop__tags">' + subcatTags(v, taxById) + "</span>" +
+                "</span>" +
+                '<span class="material-symbols-rounded route-stop__go" aria-hidden="true">chevron_right</span></button>';
+            }).join("");
+            return '<div class="route-group"><div class="route-group__h">' +
+              '<span class="material-symbols-rounded" aria-hidden="true">location_on</span>' +
+              '<span class="route-group__name">' + esc(z) + "</span>" +
+              '<span class="route-group__n">' + groups[z].length + (L.state.lang === "en" ? " stop(s)" : " 站") + "</span></div>" +
+              stops + "</div>";
+          }).join("");
+          [].forEach.call(listEl.querySelectorAll(".route-stop"), function (b) {
+            b.addEventListener("click", function () { openVendorDialog(refs[+b.dataset.ref], taxById); });
+          });
+        }
+        paintPresets();
+        paintChips();
+        render();
       }
     };
 

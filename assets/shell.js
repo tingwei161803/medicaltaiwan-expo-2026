@@ -21,6 +21,7 @@
 
   var META = window.SITE_META || { title: {}, subtitle: {}, footer: {} };
   var PAGES = Array.isArray(window.SITE_PAGES) ? window.SITE_PAGES : [];
+  var GH_REPO = "tingwei161803/medicaltaiwan-expo-2026";
 
   /* ---------- chrome i18n (page content strings live in the data) ---------- */
   var I18N = {
@@ -88,6 +89,11 @@
           '<span class="brand__name" id="brandName"></span>' +
         '</a>' +
         '<div class="appbar__actions">' +
+          '<a class="gh-star" id="ghStar" href="https://github.com/' + GH_REPO + '" ' +
+            'target="_blank" rel="noopener" title="Star on GitHub" aria-label="Star on GitHub / 到 GitHub 點星星">' +
+            '<span class="material-symbols-rounded">star</span>' +
+            '<span class="gh-star__count" id="ghStarCount">★</span>' +
+          '</a>' +
           '<button class="icon-btn" id="langToggle" type="button" title="Language" aria-label="Toggle language / 切換語言">' +
             '<span class="material-symbols-rounded">translate</span>' +
             '<span class="icon-btn__txt" id="langLabel">中</span>' +
@@ -224,12 +230,28 @@
   /* =======================================================================
      INIT
      ===================================================================== */
+  /* Live GitHub star count. Only fetched on a real deployed host — skipped on
+     localhost / file:// so local preview and headless tests never hit the API
+     (a rate-limited 4xx would surface as a console error). Degrades silently. */
+  function fetchStars() {
+    var host = location.hostname;
+    if (location.protocol === "file:" || host === "localhost" || host === "127.0.0.1" || host === "") return;
+    if (!window.fetch) return;
+    var el = document.getElementById("ghStarCount");
+    if (!el) return;
+    fetch("https://api.github.com/repos/" + GH_REPO)
+      .then(function (r) { return r.ok ? r.json() : null; })
+      .then(function (j) { if (j && typeof j.stargazers_count === "number") el.textContent = j.stargazers_count; })
+      .catch(function () { /* offline / rate-limited: keep the ★ placeholder */ });
+  }
+
   function init() {
     injectChrome();
     applyTheme();
     applyLangChrome();
     refreshChrome();
     wire();
+    fetchStars();
     window.LDW.ready = true;
     document.dispatchEvent(new CustomEvent("ldw:shell-ready"));
   }
