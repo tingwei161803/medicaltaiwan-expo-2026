@@ -164,6 +164,174 @@ window.SITE_PAGES = [
     ]
   },
 
+  /* ===================== MEDICAL AI / DEEP-DIVE ===================== */
+  {
+    slug: "medical-ai", layout: "medical", icon: "neurology",
+    title:    { en: "Medical AI", zh: "醫療 AI 廠商" },
+    subtitle: { en: "Medical-AI-focused exhibitors and innovations, each with a detailed profile. Filter by sub-category or search; tap a card for the full breakdown.",
+                zh: "聚焦醫療 AI 的參展廠商與創新項目,每一個都有詳細介紹。可依次分類篩選或搜尋,點卡片看完整拆解。" },
+    taxonomy: [
+      { id: "imaging",  icon: "image_search",            name: { en: "Medical imaging AI", zh: "醫療影像 AI" } },
+      { id: "surgical", icon: "precision_manufacturing", name: { en: "Surgical navigation & robots", zh: "手術導航與機器人" } },
+      { id: "rehab",    icon: "accessibility_new",       name: { en: "Rehab & assistive robots", zh: "復健與輔助機器人" } },
+      { id: "platform", icon: "hub",                     name: { en: "AI platforms & clinical systems", zh: "AI 平台與臨床系統" } },
+      { id: "startup",  icon: "rocket_launch",           name: { en: "M-novator startups", zh: "M-novator 新創" } }
+    ],
+    vendors: [
+      {
+        slug: "ebm", subcats: ["imaging", "platform"],
+        name: { en: "EBM Technologies", zh: "商之器科技" },
+        zone: { en: "AI & Smart Healthcare", zh: "AI 智慧醫療" },
+        location: { en: "AI Smart Healthcare Pavilion (booth per official map)", zh: "AI 智慧醫療主題館(攤位以官方平面圖為準)" },
+        highlight: { en: "PACS pioneer now powering a medical-imaging AI platform.", zh: "PACS 老牌廠商,跨入醫療影像 AI 整合平台。" },
+        profile: {
+          summary: { en: "Founded in Taiwan in 1988, EBM Technologies (TWSE: 8409) is a leading provider of medical imaging systems — PACS, PHR and EMR — with its PACS installed in 3,500+ hospitals worldwide.",
+                     zh: "商之器科技(上市代號 8409)1988 年於台灣成立,是醫療影像系統(PACS、PHR、EMR)的領導廠商,PACS 已導入全球 3,500 多家醫院。" },
+          angle:   { en: "It has pivoted toward mobile health and AI integration, building a platform that helps AI models land in real clinical settings.",
+                     zh: "近年轉向行動醫療與 AI 整合,打造協助 AI 模型實際落地臨床的平台。" },
+          tech:    { en: "A medical-imaging AI integration platform covering image annotation, model training, result visualization and deployment; has adopted NVIDIA Clara.",
+                     zh: "醫療影像 AI 整合平台,涵蓋影像標註、模型訓練、結果視覺化與部署;並導入 NVIDIA Clara。" },
+          usecase: { en: "Hospitals plugging third-party or in-house AI models into existing imaging workflows.",
+                     zh: "醫院把第三方或自研 AI 模型接入既有影像工作流程。" }
+        },
+        url: "https://www.ebmtech.com/"
+      },
+      {
+        slug: "point-robotics", subcats: ["surgical"],
+        name: { en: "Point Robotics", zh: "炳碩生醫" },
+        zone: { en: "AI & Smart Healthcare", zh: "AI 智慧醫療" },
+        location: { en: "AI Smart Healthcare Pavilion (booth per official map)", zh: "AI 智慧醫療主題館(攤位以官方平面圖為準)" },
+        highlight: { en: "Taiwan's first spine-surgery navigation, building a full surgical-robot platform.", zh: "台灣第一家脊椎手術導航,打造全方位脊椎手術機器人平台。" },
+        profile: {
+          summary: { en: "Founded in 2016, Point Robotics is a Taiwanese medical-device maker focused on spine-surgery navigation systems and robotics.",
+                     zh: "炳碩生醫 2016 年成立,是專注於脊椎手術導航系統與機器人的台灣醫材廠商。" },
+          angle:   { en: "Robotic guidance for minimally invasive spine surgery — raising precision while cutting radiation exposure.",
+                     zh: "以機器人導引微創脊椎手術,提升精準度的同時降低輻射曝露。" },
+          tech:    { en: "Surgical navigation / assist robotic systems that reduce the need for X-ray imaging, lowering radiation for patient and staff to about one-third.",
+                     zh: "手術導航/輔助機器人系統,可大幅減少 X 光拍攝需求,讓病人與醫護的輻射曝露降至約原本的 1/3。" },
+          usecase: { en: "Minimally invasive spinal procedures that demand high placement accuracy.",
+                     zh: "需要高置入精準度的微創脊椎手術。" }
+        }
+      },
+      {
+        slug: "hiwin", subcats: ["rehab", "surgical"],
+        name: { en: "HIWIN Technologies", zh: "上銀科技" },
+        zone: { en: "Sports Medicine / AI & Smart Healthcare", zh: "運動醫學 / AI 智慧醫療" },
+        location: { en: "Sports Medicine / AI Smart Healthcare zones", zh: "運動醫學 / AI 智慧醫療展區" },
+        highlight: { en: "Three decades of motion control, now in rehab and surgical robots.", zh: "近三十年傳動控制底蘊,跨足復健與手術機器人。" },
+        profile: {
+          summary: { en: "Drawing on ~30 years of transmission-control and robotics expertise, HIWIN partners with clinical institutions to build medical robots across surgery, rehabilitation and long-term care.",
+                     zh: "上銀以近 30 年傳動控制與機器人技術經驗,與醫療單位合作,打造涵蓋手術、復健與長照三大領域的醫用機器人。" },
+          angle:   { en: "Sensor-driven, precise motion control applied to therapy and the operating room.",
+                     zh: "以多重感測與精密動作控制,應用於復健治療與手術室。" },
+          tech:    { en: "An 'active-assist' lower-limb rehab robot that lets partially mobile patients initiate training with their own effort, plus an endoscope-holding robotic arm for surgeons.",
+                     zh: "『主動輔助』下肢復健機器人,讓仍有部分動作能力的患者用自己的力量啟動訓練;另有為外科醫師提供精準視野的內視鏡扶持機器手臂。" },
+          usecase: { en: "Stroke / orthopaedic rehabilitation and minimally invasive surgery support.",
+                     zh: "中風、骨科復健訓練,以及微創手術視野輔助。" }
+        },
+        url: "https://www.hiwin.tw/products/medical_robot/medical_robot_list.aspx"
+      },
+      {
+        slug: "youbioda", subcats: ["platform", "surgical"],
+        name: { en: "優必達 (AI & robotics)", zh: "優必達" },
+        zone: { en: "AI & Smart Healthcare", zh: "AI 智慧醫療" },
+        location: { en: "AI Smart Healthcare Pavilion (booth per official map)", zh: "AI 智慧醫療主題館(攤位以官方平面圖為準)" },
+        highlight: { en: "AI and robotics technology for healthcare automation.", zh: "人工智慧與機器人技術,投入醫療自動化。" },
+        profile: {
+          summary: { en: "One of the domestic flagship exhibitors highlighted this year for artificial-intelligence and robotics technology in the smart-healthcare space.",
+                     zh: "本屆受矚目的台灣旗艦參展廠商之一,以人工智慧與機器人技術投入智慧醫療領域。" },
+          angle:   { en: "Combining AI with robotics to automate and augment clinical and care workflows.",
+                     zh: "結合 AI 與機器人,自動化並強化臨床與照護流程。" },
+          tech:    { en: "AI and robotics solutions targeting smart-healthcare and automation applications.",
+                     zh: "面向智慧醫療與自動化應用的 AI 與機器人解決方案。" },
+          usecase: { en: "Healthcare settings adopting AI-driven automation.",
+                     zh: "導入 AI 自動化的醫療場域。" }
+        }
+      },
+      {
+        slug: "ai-pavilion", subcats: ["platform", "imaging"],
+        name: { en: "AI Smart Healthcare Pavilion (× ITRI)", zh: "AI 智慧醫療主題館(× 工研院)" },
+        zone: { en: "AI & Smart Healthcare", zh: "AI 智慧醫療" },
+        location: { en: "AI Smart Healthcare Pavilion", zh: "AI 智慧醫療主題館" },
+        highlight: { en: "Association × ITRI: AI scenarios on a big-data platform.", zh: "醫材公會 × 工研院:AI 智慧場域結合大數據平台。" },
+        profile: {
+          summary: { en: "A themed pavilion organized by the Taiwan Medical and Biotech Industry Association together with ITRI (Industrial Technology Research Institute).",
+                     zh: "由台灣醫療暨生技器材工業同業公會主辦、攜手工業技術研究院(工研院)聯合展出的主題館。" },
+          angle:   { en: "Brings AI smart-scenario applications together with an AI big-data platform.",
+                     zh: "聚焦 AI 智慧場域應用,並結合 AI 大數據平台。" },
+          tech:    { en: "Demonstrations spanning smart operating rooms, ICU solutions and clinical image analysis, with hospital information-system integration.",
+                     zh: "展示橫跨智慧手術室、ICU 解決方案與臨床影像分析,並涵蓋醫院資訊系統整合。" },
+          usecase: { en: "Hospitals modernizing the OR, ICU and imaging pipeline with AI.",
+                     zh: "醫院以 AI 升級手術室、ICU 與影像流程。" }
+        }
+      },
+      {
+        slug: "mnovator-cancer", subcats: ["startup", "imaging"],
+        name: { en: "M-novator · Early cancer detection", zh: "M-novator · 癌症早期檢測" },
+        zone: { en: "M-novator Startup Zone", zh: "M-novator 新創專區" },
+        location: { en: "M-novator Startup Zone", zh: "M-novator 新創專區" },
+        highlight: { en: "Catching cancer earlier from the startup zone.", zh: "新創專區的癌症早期檢測技術。" },
+        profile: {
+          summary: { en: "A highlighted innovation in the M-novator zone, which gathers 10 startups from 5 countries around AI, digital health and precision health.",
+                     zh: "M-novator 專區的亮點之一;該專區集結 5 國 10 家新創,聚焦 AI、數位健康與精準健康。" },
+          angle:   { en: "Using AI and biomarkers to detect cancer earlier, when it is more treatable.",
+                     zh: "運用 AI 與生物標記,在更易治療的早期階段發現癌症。" },
+          tech:    { en: "Early cancer detection technology.", zh: "癌症早期檢測技術。" },
+          usecase: { en: "Screening and earlier-diagnosis pathways.", zh: "篩檢與早期診斷流程。" }
+        }
+      },
+      {
+        slug: "mnovator-ecg", subcats: ["startup", "platform"],
+        name: { en: "M-novator · Contactless ECG", zh: "M-novator · 非接觸式心電圖" },
+        zone: { en: "M-novator Startup Zone", zh: "M-novator 新創專區" },
+        location: { en: "M-novator Startup Zone", zh: "M-novator 新創專區" },
+        highlight: { en: "Capturing ECG without contact electrodes.", zh: "免貼電極即可量測心電訊號。" },
+        profile: {
+          summary: { en: "A startup-zone highlight from the M-novator pavilion (10 startups, 5 countries).",
+                     zh: "來自 M-novator 新創專區(5 國 10 家)的亮點項目之一。" },
+          angle:   { en: "Lowering the friction of cardiac monitoring by removing the contact electrodes.",
+                     zh: "移除接觸電極,降低心臟監測的使用門檻。" },
+          tech:    { en: "Contactless (non-contact) ECG sensing.", zh: "非接觸式心電圖感測技術。" },
+          usecase: { en: "Continuous, comfortable cardiac monitoring at home or bedside.",
+                     zh: "在家或床邊的持續、舒適心臟監測。" }
+        }
+      },
+      {
+        slug: "mnovator-wearable", subcats: ["startup", "platform"],
+        name: { en: "M-novator · AI wearable health management", zh: "M-novator · AI 穿戴即時健康管理" },
+        zone: { en: "M-novator Startup Zone", zh: "M-novator 新創專區" },
+        location: { en: "M-novator Startup Zone", zh: "M-novator 新創專區" },
+        highlight: { en: "Real-time health management via AI wearables.", zh: "以 AI 穿戴裝置即時管理健康。" },
+        profile: {
+          summary: { en: "A startup-zone highlight from the M-novator pavilion (10 startups, 5 countries).",
+                     zh: "來自 M-novator 新創專區(5 國 10 家)的亮點項目之一。" },
+          angle:   { en: "Turning continuous wearable signals into actionable, real-time health management.",
+                     zh: "把穿戴裝置的連續訊號,轉化為可行動的即時健康管理。" },
+          tech:    { en: "AI-integrated wearable devices with a real-time health-management service.",
+                     zh: "整合 AI 的穿戴裝置與即時健康管理服務。" },
+          usecase: { en: "Day-to-day chronic-condition and wellness monitoring.",
+                     zh: "日常慢性病與健康狀態監測。" }
+        }
+      },
+      {
+        slug: "mnovator-wound", subcats: ["startup", "imaging"],
+        name: { en: "M-novator · Remote wound-imaging analysis", zh: "M-novator · 傷口照護遠距影像分析" },
+        zone: { en: "M-novator Startup Zone", zh: "M-novator 新創專區" },
+        location: { en: "M-novator Startup Zone", zh: "M-novator 新創專區" },
+        highlight: { en: "Analyzing wound images remotely for care teams.", zh: "為照護團隊遠距分析傷口影像。" },
+        profile: {
+          summary: { en: "A startup-zone highlight from the M-novator pavilion (10 startups, 5 countries).",
+                     zh: "來自 M-novator 新創專區(5 國 10 家)的亮點項目之一。" },
+          angle:   { en: "Bringing AI image analysis to wound care so it can happen outside the clinic.",
+                     zh: "把 AI 影像分析帶到傷口照護,讓照護不必侷限在診間。" },
+          tech:    { en: "A remote wound-care image-analysis platform.", zh: "傷口照護遠距影像分析平台。" },
+          usecase: { en: "Home and long-term care wound monitoring and triage.",
+                     zh: "居家與長照的傷口監測與分級照護。" }
+        }
+      }
+    ]
+  },
+
   /* ===================== EXHIBITORS / TABLE ===================== */
   {
     slug: "exhibitors", layout: "table", icon: "storefront",
@@ -268,6 +436,36 @@ window.SITE_PAGES = [
         { type: "p", text: { en: "Official forum page: bw.businessweekly.com.tw/event/2026/MedicalTaiwanForum",
                              zh: "焦點論壇官方頁面:bw.businessweekly.com.tw/event/2026/MedicalTaiwanForum" } }
       ] }
+    ]
+  },
+
+  /* ===================== ROUTES / VISITING PLANNER ===================== */
+  {
+    slug: "routes", layout: "routes", icon: "route",
+    title:    { en: "Visiting Routes", zh: "參觀路線" },
+    subtitle: { en: "Plan a medical-AI walking route. Pick a preset or combine sub-categories — the itinerary is generated from the Medical AI exhibitors and grouped by zone so it's actually walkable. Tap any stop for its full profile.",
+                zh: "規劃醫療 AI 參觀動線。挑一個預設路線,或自由組合次分類 —— 行程會即時從「醫療 AI 廠商」產生並依展區分組,逛起來才順。點任一站看完整介紹。" },
+    presets: [
+      { icon: "image_search", subcats: ["imaging"],
+        name: { en: "Imaging & Diagnosis", zh: "影像與診斷" },
+        desc: { en: "Medical-imaging AI, from PACS platforms to early detection and wound analysis.",
+                zh: "醫療影像 AI:從 PACS 平台到早期檢測與傷口分析。" },
+        tip:  { en: "Good for radiology / informatics buyers", zh: "適合影像/資訊科採購" } },
+      { icon: "precision_manufacturing", subcats: ["surgical", "rehab"],
+        name: { en: "Surgical & Rehab Robots", zh: "手術與復健機器人" },
+        desc: { en: "Surgical navigation, surgery-assist robots and rehabilitation robotics.",
+                zh: "手術導航、手術輔助機器人與復健機器人。" },
+        tip:  { en: "Good for surgery / rehab departments", zh: "適合外科/復健科" } },
+      { icon: "hub", subcats: ["platform"],
+        name: { en: "AI Platforms & Clinical", zh: "AI 平台與臨床場域" },
+        desc: { en: "AI integration platforms, big data, smart OR / ICU and clinical systems.",
+                zh: "AI 整合平台、大數據、智慧手術室/ICU 與臨床系統。" },
+        tip:  { en: "Good for hospital IT / CIOs", zh: "適合醫院資訊/CIO" } },
+      { icon: "rocket_launch", subcats: ["startup"],
+        name: { en: "M-novator Startup Tour", zh: "M-novator 新創巡禮" },
+        desc: { en: "The startup zone's medical-AI highlights — detection, wearables, remote care.",
+                zh: "新創專區的醫療 AI 亮點:檢測、穿戴、遠距照護。" },
+        tip:  { en: "Good for investors / scouts", zh: "適合投資/選題" } }
     ]
   },
 
