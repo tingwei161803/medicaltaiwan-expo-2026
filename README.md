@@ -23,11 +23,11 @@
 | 展會總覽 | `index.html` | hub | 一句話定位、關鍵數字(屆次 / 展商 / 展位 / 展區 / 買主 / 觀眾)+ 通往各頁的入口卡 |
 | 展會亮點 | `about.html` | bento | 三大主軸、參展規模、兩大新專區、AI 智慧醫療主題館、精準醫療商機、同期 Food Taipei |
 | 主題展區 | `pavilions.html` | gallery | 九大主題展區,依三大主軸篩選 + 搜尋,點卡片看詳情 |
-| 醫療 AI 廠商 | `medical-ai.html` | medical | 聚焦醫療 AI 的廠商與創新項目,依次分類篩選 + 搜尋;點開看「公司簡介 / 醫療 AI 切入點 / 技術與產品 / 應用場景」多面向介紹 + 展區位置 |
-| 焦點展商 | `exhibitors.html` | table | 代表性展商與技術亮點,可依展區篩選、點欄位排序 |
+| 醫療 AI 廠商 | `medical-ai.html` | medical | 聚焦醫療 AI 的廠商、主題館與論壇/趨勢主題(含生成式 AI/LLM、代理型 AI),依次分類篩選 + 搜尋;點開看「公司簡介 / 醫療 AI 切入點 / 技術與產品 / 應用場景」多面向介紹 + 展區位置 |
+| 參展商名錄 | `exhibitors.html` | table | **整理自官方名單的全部約 276 家參展商**,可依名稱/產品搜尋、依展區篩選(19 區)、點欄位排序 |
 | 展期與活動 | `schedule.html` | timeline | 6/25–27 三天展期與重點論壇時間軸 |
 | 重點論壇 | `forum.html` | article | 國際趨勢論壇(在宅醫療)、國內市場論壇、長照論壇、RX FOR FUTURE,附目錄與閱讀進度 |
-| 參觀路線 | `routes.html` | routes | 醫療 AI 參觀動線:挑預設路線或自由組合次分類,即時產生依展區分組的可走動線,點任一站看完整介紹 |
+| 參觀路線 | `routes.html` | routes | 醫療 AI 參觀動線:7 條預設路線(影像、機器人、AI 平台、生成式 AI/LLM、代理型 AI、前沿 AI、新創)或自由組合次分類,即時產生依展區分組的可走動線 |
 | 參觀資訊 | `visit.html` | faq | 日期時間、地點交通、報名與快速入場、停車、現場服務與聯絡的常見問答(可搜尋) |
 
 > 三大主軸:創新長照、智慧醫療、醫材廊道。九大展區:智慧長照、智慧輔具、運動醫學、AI 智慧醫療、精準醫療、M-novator 新創、醫療器材與耗材、零組件與配件、國際館。
@@ -39,9 +39,10 @@
 - 🧭 **跨頁導覽列** — 9 頁一鍵切換,自動高亮目前頁
 - 🌏 **全頁雙語** — 中文 / English 一鍵切換,卡片、詳情、導覽與靜態文案整頁同步、無殘留
 - 🌗 **深 / 淺色模式** — 醫療專業藍綠(teal)配色,`localStorage` 記憶,跨頁延續
-- 🩺 **醫療 AI 深度頁** — 次分類篩選、廠商卡片亮點,點開看「公司簡介 / 醫療 AI 切入點 / 技術與產品 / 應用場景」多面向雙語介紹 + 展區位置
-- 🗺️ **參觀路線產生器** — 選預設路線或自由組合次分類,即時產生依展區分組、可走的醫療 AI 參觀動線
-- 🔍 **搜尋 / 篩選** — 展區與醫療 AI 頁即時搜尋 + 分類篩選;展商頁可排序、依展區篩選;論壇頁可搜尋問答
+- 🩺 **醫療 AI 深度頁** — 次分類篩選(含生成式 AI/LLM、代理型 AI)、廠商卡片亮點,點開看「公司簡介 / 醫療 AI 切入點 / 技術與產品 / 應用場景」多面向雙語介紹 + 展區位置
+- 🗂️ **全參展商名錄** — 整理自官網的**全部約 276 家**參展商,可依名稱/產品即時搜尋、依展區(19 區)篩選、點欄位排序
+- 🗺️ **參觀路線產生器** — 7 條預設路線(含生成式 AI/LLM、代理型 AI、前沿 AI)或自由組合次分類,即時產生依展區分組、可走的醫療 AI 參觀動線
+- 🔍 **搜尋 / 篩選** — 展區與醫療 AI 頁即時搜尋 + 分類篩選;名錄頁可全文搜尋、依展區篩選、排序;論壇頁可搜尋問答
 - 🗂️ **詳情對話框 + 深連結** — 卡片點開看完整介紹,`#<slug>` 可直接分享
 - ⭐ **GitHub 星星連結** — 右上角一鍵到 GitHub 點星星,線上版顯示即時星數
 - 📊 **多種版型** — hub / bento / gallery / medical / table / timeline / article / routes / faq,依每頁資料形狀呈現
@@ -58,7 +59,7 @@ medicaltaiwan-expo-2026/
 ├── about.html        # 展會亮點(bento)
 ├── pavilions.html    # 主題展區(gallery)
 ├── medical-ai.html   # 醫療 AI 廠商(medical)
-├── exhibitors.html   # 焦點展商(table)
+├── exhibitors.html   # 參展商名錄(table,載入 data/exhibitors.js)
 ├── schedule.html     # 展期與活動(timeline)
 ├── forum.html        # 重點論壇(article)
 ├── routes.html       # 參觀路線(routes)
@@ -68,7 +69,8 @@ medicaltaiwan-expo-2026/
 │   ├── shell.js      # 共用 chrome:appbar(含 GitHub 星數)/ 跨頁 nav / footer / dialog / 語言+主題狀態
 │   └── app.js        # 版型引擎:依 body[data-page] 選 renderer 渲染進 #page
 ├── data/
-│   └── data.js       # 唯一資料檔:SITE_META + SITE_PAGES[](每頁載入同一份)
+│   ├── data.js       # 主資料檔:SITE_META + SITE_PAGES[](每頁載入同一份)
+│   └── exhibitors.js # 全部約 276 家參展商名錄(僅 exhibitors.html 載入)
 ├── .nojekyll
 └── README.md
 ```
