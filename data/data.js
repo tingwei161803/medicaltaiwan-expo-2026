@@ -544,5 +544,20 @@ window.SITE_PAGES = [
         a: { en: "Yes — Food Taipei runs alongside, including a Healthy Food zone focused on health foods and precision nutrition.",
              zh: "有 —— 台北國際食品展(Food Taipei)同期舉辦,並設「食在健康館」,聚焦保健食品與精準營養。" } }
     ]
+  },
+
+  /* ===================== GAMES / ARCADE ===================== */
+  /* layout "arcade" is rendered by app.js from window.GAMES — a registry that
+     each self-contained module in assets/games/*.js pushes into. The cards,
+     category filter and game stage are all built from that registry, so adding
+     a game means only dropping in one more assets/games/<id>.js (+ its <script>
+     tag in games.html). This page entry just puts "遊戲中心" in the cross-page nav. */
+  {
+    slug: "games", layout: "arcade", icon: "sports_esports",
+    title:    { en: "Games", zh: "遊戲中心" },
+    subtitle: {
+      en: "Take a break between booths — a collection of bite-size, medical-themed mini-games. Everything runs in your browser; nothing is uploaded.",
+      zh: "逛展逛累了就來放鬆一下 —— 一整牆醫療主題的休閒小遊戲。全部在瀏覽器內執行,不上傳任何資料。"
+    }
   }
 ];

@@ -31,6 +31,7 @@
     var t = L.t, esc = L.escapeHtml, r = L.r;
     var pageEl = document.getElementById("page");
     var teardowns = [];   // observers / listeners to disconnect before each repaint
+    var arcadeOpen = null; // id of the mini-game currently open (survives lang re-render)
 
     /* ---------- shared bits ---------- */
     function head(p) {
@@ -371,6 +372,34 @@
           '<div class="chips" id="routeChips"></div>' +
           '<p class="route-summary" id="routeSummary" aria-live="polite"></p>' +
           '<div class="route-list" id="routeList"></div>';
+      },
+
+      /* ---- arcade: a wall of self-registered mini-games (window.GAMES) ---- */
+      /* Each game is one self-contained module in assets/games/*.js that pushes
+         { id, icon, title, tagline, category, accent, mount(root, ctx) } onto
+         window.GAMES. The grid + filter chips are built in WIRE.arcade from that
+         registry; clicking a card swaps the grid for a "stage" and calls mount(). */
+      arcade: function (p) {
+        var n = (window.GAMES || []).length;
+        var sub = t(p.subtitle)
+          ? '<p class="page-head__sub">' + esc(t(p.subtitle)) + "</p>" : "";
+        var counted = L.state.lang === "en"
+          ? (n + " mini-games — pick one and play.")
+          : ("共 " + n + " 款小遊戲,挑一個來玩。");
+        return '<header class="page-head"><h1>' + esc(t(p.title)) + "</h1>" + sub +
+            '<p class="page-head__sub">' + esc(counted) + "</p></header>" +
+          '<div class="arcade-filters" id="arcadeFilters"></div>' +
+          '<div class="arcade-grid" id="arcadeGrid"></div>' +
+          '<section class="arcade-stage" id="arcadeStage" hidden>' +
+            '<div class="stage-bar">' +
+              '<button class="stage-back" id="stageBack" type="button">' +
+                '<span class="material-symbols-rounded" aria-hidden="true">arrow_back</span>' +
+                '<span id="stageBackTxt"></span></button>' +
+              '<h2 class="stage-title" id="stageTitle"></h2>' +
+              '<span class="stage-cat" id="stageCat"></span>' +
+            '</div>' +
+            '<div class="game-host" id="gameHost"></div>' +
+          '</section>';
       }
     };
 
@@ -379,6 +408,130 @@
        ===================================================================== */
     var WIRE = {
       hub: function () { animateCounters(); },
+
+      /* ---- arcade: build game cards from window.GAMES; open/close the stage ---- */
+      arcade: function () {
+        var GAMES = window.GAMES || [];
+        var grid    = document.getElementById("arcadeGrid");
+        var filters = document.getElementById("arcadeFilters");
+        var stage   = document.getElementById("arcadeStage");
+        var host    = document.getElementById("gameHost");
+        if (!grid || !stage || !host) return;
+
+        var stTitle = document.getElementById("stageTitle");
+        var stCat   = document.getElementById("stageCat");
+        var stBack  = document.getElementById("stageBack");
+        document.getElementById("stageBackTxt").textContent =
+          t({ zh: "返回遊戲牆", en: "All games" });
+
+        var cleanup = null;   // current game's teardown
+        var st = { cat: "" };
+
+        /* sandbox-safe, per-game namespaced storage handed to each game */
+        function gameCtx(g) {
+          var ns = "game:" + g.id + ":";
+          return {
+            lang: L.state.lang,
+            t: t, esc: esc,
+            load: function (k, fb) {
+              var v = L.lsGet(ns + k);
+              if (v == null) return fb;
+              try { return JSON.parse(v); } catch (e) { return v; }
+            },
+            save: function (k, val) { L.lsSet(ns + k, JSON.stringify(val)); },
+            close: closeGame
+          };
+        }
+
+        function bestLabel(g) {
+          var v = L.lsGet("game:" + g.id + ":best");
+          if (v == null) return "";
+          try { v = JSON.parse(v); } catch (e) {}
+          if (v == null || v === 0 || v === "") return "";
+          return (L.state.lang === "en" ? "Best: " : "最佳:") + v;
+        }
+
+        function paintCards() {
+          var list = st.cat
+            ? GAMES.filter(function (g) { return t(g.category) === st.cat; })
+            : GAMES;
+          grid.innerHTML = list.map(function (g) {
+            var accent = g.accent ? ' style="--gcard-accent:' + esc(g.accent) + '"' : "";
+            var best = bestLabel(g);
+            return '<button class="gcard" type="button" data-game="' + esc(g.id) + '"' + accent + '>' +
+              '<span class="gcard__icon"><span class="material-symbols-rounded" aria-hidden="true">' +
+                esc(g.icon || "sports_esports") + '</span></span>' +
+              '<span class="gcard__cat">' + esc(t(g.category)) + '</span>' +
+              '<h3 class="gcard__title">' + esc(t(g.title)) + '</h3>' +
+              '<p class="gcard__tag">' + esc(t(g.tagline)) + '</p>' +
+              (best ? '<span class="gcard__best">' + esc(best) + '</span>' : '') +
+              '<span class="gcard__play"><span class="material-symbols-rounded" aria-hidden="true">' +
+                'play_arrow</span>' + esc(t({ zh: "開始玩", en: "Play" })) + '</span>' +
+              '</button>';
+          }).join("") ||
+            '<p class="empty">' + esc(t({ zh: "尚無遊戲", en: "No games yet" })) + '</p>';
+          [].forEach.call(grid.querySelectorAll(".gcard"), function (card) {
+            card.addEventListener("click", function () { openGame(card.getAttribute("data-game")); });
+          });
+        }
+
+        function paintFilters() {
+          var cats = [];
+          GAMES.forEach(function (g) { var c = t(g.category); if (c && cats.indexOf(c) < 0) cats.push(c); });
+          var all = t({ zh: "全部", en: "All" });
+          filters.innerHTML = ['<button class="chip' + (st.cat === "" ? " chip--active" : "") +
+            '" data-cat="">' + esc(all) + "</button>"]
+            .concat(cats.map(function (c) {
+              return '<button class="chip' + (st.cat === c ? " chip--active" : "") +
+                '" data-cat="' + esc(c) + '">' + esc(c) + "</button>";
+            })).join("");
+          [].forEach.call(filters.querySelectorAll(".chip"), function (chip) {
+            chip.addEventListener("click", function () {
+              st.cat = chip.getAttribute("data-cat") || "";
+              paintFilters(); paintCards();
+            });
+          });
+        }
+
+        function findGame(id) {
+          for (var i = 0; i < GAMES.length; i++) if (GAMES[i].id === id) return GAMES[i];
+          return null;
+        }
+
+        function openGame(id) {
+          var g = findGame(id);
+          if (!g) return;
+          arcadeOpen = id;
+          if (cleanup) { try { cleanup(); } catch (e) {} cleanup = null; }
+          host.innerHTML = "";
+          stTitle.textContent = t(g.title);
+          stCat.textContent = t(g.category);
+          grid.hidden = true; filters.hidden = true; stage.hidden = false;
+          try { cleanup = g.mount(host, gameCtx(g)) || null; }
+          catch (e) { host.innerHTML = '<p class="empty">⚠️ ' +
+            esc(t({ zh: "這個遊戲載入失敗", en: "This game failed to load" })) + "</p>"; }
+          stage.scrollIntoView({ block: "start" });
+        }
+
+        function closeGame() {
+          if (cleanup) { try { cleanup(); } catch (e) {} cleanup = null; }
+          host.innerHTML = "";
+          arcadeOpen = null;
+          stage.hidden = true; grid.hidden = false; filters.hidden = false;
+          paintCards();  // refresh "best" badges that may have changed
+        }
+
+        stBack.addEventListener("click", closeGame);
+
+        paintFilters();
+        paintCards();
+
+        /* a game was open before a language re-render → re-open it in the new language */
+        if (arcadeOpen && findGame(arcadeOpen)) openGame(arcadeOpen);
+
+        /* tear down the live game (but keep arcadeOpen so a lang switch re-opens it) */
+        teardowns.push(function () { if (cleanup) { try { cleanup(); } catch (e) {} cleanup = null; } });
+      },
 
       gallery: function (p) {
         var grid = document.getElementById("grid");
