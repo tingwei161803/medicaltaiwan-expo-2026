@@ -10,9 +10,9 @@
 
 | | |
 |---|---|
-| 🌐 網站 | <https://tingwei161803.github.io/medicaltaiwan-expo-2026/> |
+| 🌐 網站 | <https://medicaltaiwan-expo-2026.peteraim.com/> |
 
-頂部的**跨頁導覽列**可在 10 頁之間切換;每頁皆支援中文 / English 與深 / 淺色,設定跨頁延續,右上角並有到 GitHub 點星星的連結。展區與醫療 AI 廠商頁可用 `#<slug>` 深連結(例如 [`…/medical-ai.html#ebm`](https://tingwei161803.github.io/medicaltaiwan-expo-2026/medical-ai.html#ebm))。
+頂部的**跨頁導覽列**可在 10 頁之間切換;每頁皆支援中文 / English 與深 / 淺色,設定跨頁延續,右上角並有到 GitHub 點星星的連結。展區與醫療 AI 廠商頁可用 `#<slug>` 深連結(例如 [`…/medical-ai.html#ebm`](https://medicaltaiwan-expo-2026.peteraim.com/medical-ai.html#ebm))。
 
 ---
 
