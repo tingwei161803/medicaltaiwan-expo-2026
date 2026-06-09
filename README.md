@@ -1,8 +1,8 @@
 # Medical Taiwan 2026 · 台灣國際醫療暨健康照護展 導覽
 
-> 把第 20 屆台灣國際醫療暨健康照護展(Medical Taiwan 2026)的官方資訊,整理成一個多頁、可互動、中英雙語的靜態導覽站 —— 從展會總覽、展會亮點、九大主題展區、醫療 AI 廠商深度頁,到焦點展商、展期活動、重點論壇、參觀路線與參觀資訊。
+> 把第 20 屆台灣國際醫療暨健康照護展(Medical Taiwan 2026)的官方資訊,整理成一個多頁、可互動、中英雙語的靜態導覽站 —— 從展會總覽、展會亮點、九大主題展區、醫療 AI 廠商深度頁,到焦點展商、展期活動、重點論壇、參觀路線、參觀資訊,以及一整牆醫療主題的休閒小遊戲。
 
-本站把官方網站與公開報導裡關於 Medical Taiwan 2026 的內容,整理成 9 個彼此串連的頁面。純 HTML / CSS / JS、零建置,可直接部署到 GitHub Pages。展期、攤位、活動與報名等細節以官方公告為準。
+本站把官方網站與公開報導裡關於 Medical Taiwan 2026 的內容,整理成 10 個彼此串連的頁面(含 14 款瀏覽器小遊戲的「遊戲中心」)。純 HTML / CSS / JS、零建置,可直接部署到 GitHub Pages。展期、攤位、活動與報名等細節以官方公告為準。
 
 ---
 
@@ -12,7 +12,7 @@
 |---|---|
 | 🌐 網站 | <https://tingwei161803.github.io/medicaltaiwan-expo-2026/> |
 
-頂部的**跨頁導覽列**可在 9 頁之間切換;每頁皆支援中文 / English 與深 / 淺色,設定跨頁延續,右上角並有到 GitHub 點星星的連結。展區與醫療 AI 廠商頁可用 `#<slug>` 深連結(例如 [`…/medical-ai.html#ebm`](https://tingwei161803.github.io/medicaltaiwan-expo-2026/medical-ai.html#ebm))。
+頂部的**跨頁導覽列**可在 10 頁之間切換;每頁皆支援中文 / English 與深 / 淺色,設定跨頁延續,右上角並有到 GitHub 點星星的連結。展區與醫療 AI 廠商頁可用 `#<slug>` 深連結(例如 [`…/medical-ai.html#ebm`](https://tingwei161803.github.io/medicaltaiwan-expo-2026/medical-ai.html#ebm))。
 
 ---
 
@@ -29,6 +29,7 @@
 | 重點論壇 | `forum.html` | article | 國際趨勢論壇(在宅醫療)、國內市場論壇、長照論壇、RX FOR FUTURE,附目錄與閱讀進度 |
 | 參觀路線 | `routes.html` | routes | 醫療 AI 參觀動線:7 條預設路線(影像、機器人、AI 平台、生成式 AI/LLM、代理型 AI、前沿 AI、新創)或自由組合次分類,即時產生依展區分組的可走動線 |
 | 參觀資訊 | `visit.html` | faq | 日期時間、地點交通、報名與快速入場、停車、現場服務與聯絡的常見問答(可搜尋) |
+| 遊戲中心 | `games.html` | arcade | 14 款醫療主題休閒小遊戲(反應力、記憶、知識問答、貪食蛇、2048、拼圖、呼吸節律…),依分類篩選、點卡片進入遊玩;全部在瀏覽器內執行、記錄最佳成績 |
 
 > 三大主軸:創新長照、智慧醫療、醫材廊道。九大展區:智慧長照、智慧輔具、運動醫學、AI 智慧醫療、精準醫療、M-novator 新創、醫療器材與耗材、零組件與配件、國際館。
 
@@ -36,7 +37,8 @@
 
 ## ✨ 功能特色
 
-- 🧭 **跨頁導覽列** — 9 頁一鍵切換,自動高亮目前頁
+- 🧭 **跨頁導覽列** — 10 頁一鍵切換,自動高亮目前頁
+- 🎮 **遊戲中心** — 14 款醫療主題小遊戲(反應力 / 記憶 / 知識問答 / 貪食蛇 / 2048 / 拼圖 / 呼吸節律…),純前端、可離線、`localStorage` 記錄最佳成績;採「外掛式」契約,每款遊戲是一支自我註冊到 `window.GAMES`、自帶 scoped CSS 的獨立模組,新增一款只需丟一支 `assets/games/<id>.js`
 - 🌏 **全頁雙語** — 中文 / English 一鍵切換,卡片、詳情、導覽與靜態文案整頁同步、無殘留
 - 🌗 **深 / 淺色模式** — 醫療專業藍綠(teal)配色,`localStorage` 記憶,跨頁延續
 - 🩺 **醫療 AI 深度頁** — 次分類篩選(含生成式 AI/LLM、代理型 AI)、廠商卡片亮點,點開看「公司簡介 / 醫療 AI 切入點 / 技術與產品 / 應用場景」多面向雙語介紹 + 展區位置
@@ -45,7 +47,7 @@
 - 🔍 **搜尋 / 篩選** — 展區與醫療 AI 頁即時搜尋 + 分類篩選;名錄頁可全文搜尋、依展區篩選、排序;論壇頁可搜尋問答
 - 🗂️ **詳情對話框 + 深連結** — 卡片點開看完整介紹,`#<slug>` 可直接分享
 - ⭐ **GitHub 星星連結** — 右上角一鍵到 GitHub 點星星,線上版顯示即時星數
-- 📊 **多種版型** — hub / bento / gallery / medical / table / timeline / article / routes / faq,依每頁資料形狀呈現
+- 📊 **多種版型** — hub / bento / gallery / medical / table / timeline / article / routes / faq / arcade,依每頁資料形狀呈現
 - 📱 **響應式** — 手機 / 平板 / 桌機皆適配,375px 無水平溢出
 - ⚡ **純靜態** — 無後端、載入快、可離線瀏覽;含 SEO / Open Graph / JSON-LD(Event)
 
@@ -64,10 +66,17 @@ medicaltaiwan-expo-2026/
 ├── forum.html        # 重點論壇(article)
 ├── routes.html       # 參觀路線(routes)
 ├── visit.html        # 參觀資訊(faq)
+├── games.html        # 遊戲中心(arcade,載入 assets/games/*.js)
 ├── assets/
 │   ├── styles.css    # MD3 設計 token(淺/深,醫療藍綠)+ 全部版型樣式
+│   ├── games.css     # 遊戲中心外殼(卡片牆 / 遊戲舞台)+ 共享遊戲 UI 工具 class(.gu-*)
 │   ├── shell.js      # 共用 chrome:appbar(含 GitHub 星數)/ 跨頁 nav / footer / dialog / 語言+主題狀態
-│   └── app.js        # 版型引擎:依 body[data-page] 選 renderer 渲染進 #page
+│   ├── app.js        # 版型引擎:依 body[data-page] 選 renderer 渲染進 #page(含 arcade)
+│   └── games/        # 小遊戲模組:每支自我註冊到 window.GAMES、自帶 scoped CSS
+│       ├── _CONTRACT.md   # 遊戲模組契約(新增遊戲的規格)
+│       ├── reaction.js    # 急診反應力(參考實作)
+│       └── …             # memory / whack / quiz / simon / sort / snake / cells2048 /
+│                          #   steady / breath / rhythm / slidepuzzle / typer / guess
 ├── data/
 │   ├── data.js       # 主資料檔:SITE_META + SITE_PAGES[](每頁載入同一份)
 │   └── exhibitors.js # 全部約 276 家參展商名錄(僅 exhibitors.html 載入)
@@ -76,6 +85,8 @@ medicaltaiwan-expo-2026/
 ```
 
 > 整站由 `data/data.js` 的 `SITE_PAGES[]` 驅動:每一筆 = 一頁。新增一頁 = 複製一個 `.html`、改 `data-page`、在 `SITE_PAGES` 加一筆。每個可見字串都是 `{en, zh}`,語言切換才能整站重繪。
+>
+> **遊戲中心(arcade)** 再下一層用「外掛式」契約:`app.js` 的 `arcade` renderer 從 `window.GAMES` 動態長出卡片牆與遊戲舞台,每款遊戲是一支 `assets/games/<id>.js`,載入時 `window.GAMES.push({ id, icon, title, tagline, category, accent, mount(root, ctx) })` 把自己註冊上去並自帶前綴 `g-<id>-` 的 scoped CSS。**新增一款遊戲 = 丟一支 `assets/games/<id>.js` + 在 `games.html` 加一行 `<script>`**,完全不必動到共用檔。詳見 [`assets/games/_CONTRACT.md`](assets/games/_CONTRACT.md)。
 
 ---
 
