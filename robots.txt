@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://medicaltaiwan-expo-2026.peteraim.com/sitemap.xml
