@@ -266,7 +266,7 @@
       kanban: function (p) {
         var cols = (p.columns || []).map(function (col) {
           var cards = (p.cards || []).filter(function (c) { return c.column === col.key; }).map(function (c) {
-            var tags = (c.tags || []).map(function (g) { return '<span class="tag">' + esc(g) + "</span>"; }).join("");
+            var tags = (c.tags || []).map(function (g) { return '<span class="tag">' + esc(t(g)) + "</span>"; }).join("");
             return '<article class="kb-card" data-item><h3 class="kb-card__title">' + esc(t(c.title)) + "</h3>" +
               (t(c.body) ? '<p class="kb-card__body">' + esc(t(c.body)) + "</p>" : "") +
               (tags ? '<div class="card__tags">' + tags + "</div>" : "") + "</article>";
@@ -545,13 +545,14 @@
         function matches(item) {
           if (st.cat && item.category !== st.cat) return false;
           if (!st.q) return true;
-          var hay = (t(item.title) + " " + t(item.summary) + " " + (item.tags || []).join(" ")).toLowerCase();
+          var hay = (t(item.title) + " " + t(item.summary) + " " +
+            (item.tags || []).map(t).join(" ")).toLowerCase();
           return hay.indexOf(st.q) !== -1;
         }
         function paint() {
           var rows = (p.items || []).filter(matches);
           grid.innerHTML = rows.map(function (item) {
-            var tags = (item.tags || []).map(function (g) { return '<span class="tag">' + esc(g) + "</span>"; }).join("");
+            var tags = (item.tags || []).map(function (g) { return '<span class="tag">' + esc(t(g)) + "</span>"; }).join("");
             return '<article class="card" tabindex="0" role="button" data-item data-slug="' + esc(item.slug) + '" ' +
               'aria-label="' + esc(t(item.title)) + '">' +
               '<h3 class="card__title">' + esc(t(item.title)) + "</h3>" +
@@ -576,7 +577,7 @@
         function openItem(slug) {
           var item = findItem(slug); if (!item) return;
           var dlg = L.dialog(), body = document.getElementById("dialogBody");
-          var tags = (item.tags || []).map(function (g) { return '<span class="tag">' + esc(g) + "</span>"; }).join("");
+          var tags = (item.tags || []).map(function (g) { return '<span class="tag">' + esc(t(g)) + "</span>"; }).join("");
           body.innerHTML = '<h2 id="dialogTitle">' + esc(t(item.title)) + "</h2>" +
             (tags ? '<div class="card__tags">' + tags + "</div>" : "") +
             "<p>" + esc(t(item.overview) || t(item.summary)) + "</p>";
