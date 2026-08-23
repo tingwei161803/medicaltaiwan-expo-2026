@@ -6,8 +6,10 @@
 
      1. reads the current page from <body data-page="..."> (via LDW),
      2. picks a renderer from RENDERERS by that page's `layout`,
-     3. paints it into <main id="page"> and wires its interactions,
-     4. registers an onLang() callback so a language switch repaints the body.
+     3. paints it into <main id="page"> and wires its interactions.
+
+   The language comes from the URL (see shell.js), so the body is painted once
+   per page load — there is no in-place language repaint to subscribe to.
 
    RENDERERS is the LAYOUT REGISTRY — one entry per supported page layout:
      hub | gallery | article | dashboard | timeline | table |
@@ -31,7 +33,7 @@
     var t = L.t, esc = L.escapeHtml, r = L.r;
     var pageEl = document.getElementById("page");
     var teardowns = [];   // observers / listeners to disconnect before each repaint
-    var arcadeOpen = null; // id of the mini-game currently open (survives lang re-render)
+    var arcadeOpen = null; // id of the mini-game currently open (survives a repaint)
 
     /* ---------- shared bits ---------- */
     function head(p) {
@@ -526,10 +528,10 @@
         paintFilters();
         paintCards();
 
-        /* a game was open before a language re-render → re-open it in the new language */
+        /* a game was open before the last repaint → put it back on the stage */
         if (arcadeOpen && findGame(arcadeOpen)) openGame(arcadeOpen);
 
-        /* tear down the live game (but keep arcadeOpen so a lang switch re-opens it) */
+        /* tear down the live game (but keep arcadeOpen so a repaint restores it) */
         teardowns.push(function () { if (cleanup) { try { cleanup(); } catch (e) {} cleanup = null; } });
       },
 
@@ -1040,7 +1042,7 @@
     }
 
     /* =====================================================================
-       RENDER the current page; re-runnable on language switch
+       RENDER the current page; re-runnable (the arcade repaints on open/back)
        ===================================================================== */
     function render() {
       teardowns.forEach(function (fn) { try { fn(); } catch (e) {} });
@@ -1054,7 +1056,6 @@
       if (w) w(p);
     }
 
-    L.onLang(render);
     render();
   }
 
