@@ -6,8 +6,10 @@
 
      1. reads the current page from <body data-page="..."> (via LDW),
      2. picks a renderer from RENDERERS by that page's `layout`,
-     3. paints it into <main id="page"> and wires its interactions,
-     4. registers an onLang() callback so a language switch repaints the body.
+     3. paints it into <main id="page"> and wires its interactions.
+
+   The language comes from the URL (see shell.js), so the body is painted once
+   per page load — there is no in-place language repaint to subscribe to.
 
    RENDERERS is the LAYOUT REGISTRY — one entry per supported page layout:
      hub | gallery | article | dashboard | timeline | table |
@@ -31,7 +33,7 @@
     var t = L.t, esc = L.escapeHtml, r = L.r;
     var pageEl = document.getElementById("page");
     var teardowns = [];   // observers / listeners to disconnect before each repaint
-    var arcadeOpen = null; // id of the mini-game currently open (survives lang re-render)
+    var arcadeOpen = null; // id of the mini-game currently open (survives a repaint)
 
     /* ---------- shared bits ---------- */
     function head(p) {
@@ -264,7 +266,7 @@
       kanban: function (p) {
         var cols = (p.columns || []).map(function (col) {
           var cards = (p.cards || []).filter(function (c) { return c.column === col.key; }).map(function (c) {
-            var tags = (c.tags || []).map(function (g) { return '<span class="tag">' + esc(g) + "</span>"; }).join("");
+            var tags = (c.tags || []).map(function (g) { return '<span class="tag">' + esc(t(g)) + "</span>"; }).join("");
             return '<article class="kb-card" data-item><h3 class="kb-card__title">' + esc(t(c.title)) + "</h3>" +
               (t(c.body) ? '<p class="kb-card__body">' + esc(t(c.body)) + "</p>" : "") +
               (tags ? '<div class="card__tags">' + tags + "</div>" : "") + "</article>";
@@ -526,10 +528,10 @@
         paintFilters();
         paintCards();
 
-        /* a game was open before a language re-render → re-open it in the new language */
+        /* a game was open before the last repaint → put it back on the stage */
         if (arcadeOpen && findGame(arcadeOpen)) openGame(arcadeOpen);
 
-        /* tear down the live game (but keep arcadeOpen so a lang switch re-opens it) */
+        /* tear down the live game (but keep arcadeOpen so a repaint restores it) */
         teardowns.push(function () { if (cleanup) { try { cleanup(); } catch (e) {} cleanup = null; } });
       },
 
@@ -543,13 +545,14 @@
         function matches(item) {
           if (st.cat && item.category !== st.cat) return false;
           if (!st.q) return true;
-          var hay = (t(item.title) + " " + t(item.summary) + " " + (item.tags || []).join(" ")).toLowerCase();
+          var hay = (t(item.title) + " " + t(item.summary) + " " +
+            (item.tags || []).map(t).join(" ")).toLowerCase();
           return hay.indexOf(st.q) !== -1;
         }
         function paint() {
           var rows = (p.items || []).filter(matches);
           grid.innerHTML = rows.map(function (item) {
-            var tags = (item.tags || []).map(function (g) { return '<span class="tag">' + esc(g) + "</span>"; }).join("");
+            var tags = (item.tags || []).map(function (g) { return '<span class="tag">' + esc(t(g)) + "</span>"; }).join("");
             return '<article class="card" tabindex="0" role="button" data-item data-slug="' + esc(item.slug) + '" ' +
               'aria-label="' + esc(t(item.title)) + '">' +
               '<h3 class="card__title">' + esc(t(item.title)) + "</h3>" +
@@ -574,7 +577,7 @@
         function openItem(slug) {
           var item = findItem(slug); if (!item) return;
           var dlg = L.dialog(), body = document.getElementById("dialogBody");
-          var tags = (item.tags || []).map(function (g) { return '<span class="tag">' + esc(g) + "</span>"; }).join("");
+          var tags = (item.tags || []).map(function (g) { return '<span class="tag">' + esc(t(g)) + "</span>"; }).join("");
           body.innerHTML = '<h2 id="dialogTitle">' + esc(t(item.title)) + "</h2>" +
             (tags ? '<div class="card__tags">' + tags + "</div>" : "") +
             "<p>" + esc(t(item.overview) || t(item.summary)) + "</p>";
@@ -1040,7 +1043,7 @@
     }
 
     /* =====================================================================
-       RENDER the current page; re-runnable on language switch
+       RENDER the current page; re-runnable (the arcade repaints on open/back)
        ===================================================================== */
     function render() {
       teardowns.forEach(function (fn) { try { fn(); } catch (e) {} });
@@ -1054,7 +1057,6 @@
       if (w) w(p);
     }
 
-    L.onLang(render);
     render();
   }
 
